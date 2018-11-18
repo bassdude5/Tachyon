@@ -7,45 +7,51 @@ import java.io.File;
 import org.apache.commons.cli.*;
 
 public class Tachyon {
-    public static void main(String[] args) throws Exception {
+	
+	private static final String URL = "url";
+	private static final String OUTPUT = "o";
+	private static final String CONNECTION = "c";
+	private static final String TACHYON = "Tachyon";
+	
+    public static void main(final String[] args) throws Exception {
         String outPath = null;
         String url = null;
-        int con = Settings.DEFUALT_MAX_CONNECTIONS;
+        int con = Settings.DEFAULT_MAX_CONNECTIONS;
         
         Options options = new Options();
         HelpFormatter formatter = new HelpFormatter();
-        options.addOption("url", true, "url to download");
-        options.addOption("o", true, "path to output file");
-        options.addOption("c", true, "max number of parallel connections > 0 (default=4)");
+        options.addOption(URL, true, "url to download");
+        options.addOption(OUTPUT, true, "path to output file");
+        options.addOption(CONNECTION, true, "max number of parallel connections > 0 (default=4)");
         
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
         try {
             cmd = parser.parse( options, args);
         } catch (Exception e) {
-            formatter.printHelp( "Tachyon", options );
+            formatter.printHelp( TACHYON, options );
             return;
         }
-        if(cmd.hasOption("url")) {
-            url = cmd.getOptionValue("url");
+        if(cmd.hasOption(URL)) {
+            url = cmd.getOptionValue(URL);
 //          System.out.println(url);
         }
         else {
-            formatter.printHelp( "Tachyon", options );
+            formatter.printHelp( TACHYON, options );
             return;
         }
-        if(cmd.hasOption("c")) {
+        if(cmd.hasOption(CONNECTION)) {
             try {
-                con = Integer.parseInt(cmd.getOptionValue("c"));
+                con = Integer.parseInt(cmd.getOptionValue(CONNECTION));
             } catch (Exception e) {
                 System.out.println("invalid number of connections");
-                formatter.printHelp( "Tachyon", options );
+                formatter.printHelp( TACHYON, options );
                 return;
             }
         }
         
-        if(cmd.hasOption("o")) {
-            outPath = cmd.getOptionValue("o");
+        if(cmd.hasOption(OUTPUT)) {
+            outPath = cmd.getOptionValue(OUTPUT);
             System.out.println(outPath);
             File file = new File(outPath);
             if (! (file.getParentFile().isDirectory() && file.getParentFile().exists()) ) {
@@ -56,7 +62,7 @@ public class Tachyon {
             System.out.println("Exiting..");
         }
         else {
-            formatter.printHelp( "Tachyon", options );
+            formatter.printHelp( TACHYON, options );
             return;
         }
         
